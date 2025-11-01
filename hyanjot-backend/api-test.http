@@ -1,0 +1,55 @@
+### 1. 用户注册
+POST http://localhost:8080/api/user/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "123456",
+  "nickname": "测试用户"
+}
+
+### 2. 获取所有用户
+GET http://localhost:8080/api/user/list
+
+### 3. 创建TODO备忘项
+POST http://localhost:8080/api/item
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "type": "TODO",
+  "title": "完成作业",
+  "content": "数学作业第3章",
+  "config": "{\"deadline\":\"2025-11-05\",\"priority\":\"high\",\"progress\":{\"current\":2,\"total\":5}}"
+}
+
+### 4. 创建HABIT备忘项
+POST http://localhost:8080/api/item
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "type": "HABIT",
+  "title": "每天喝8杯水",
+  "config": "{\"repeat_rule\":\"daily\",\"streak_days\":0}"
+}
+
+### 5. 获取用户1的所有备忘项
+GET http://localhost:8080/api/item/user/1
+
+### 6. 切换备忘项状态
+PUT http://localhost:8080/api/item/1/toggle
+
+### 7. 注册设备
+POST http://localhost:8080/api/device/register
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "deviceName": "书桌屏幕",
+  "deviceToken": "test-token-123456",
+  "macAddress": "AA:BB:CC:DD:EE:FF"
+}
+
+### 8. 设备认证测试
+GET http://localhost:8080/api/device/auth/test-token-123456

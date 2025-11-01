@@ -1,33 +1,50 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# 后端相关
+hyanjot-backend/target/
+hyanjot-backend/.idea
+hyanjot-backend/*.iml
+hyanjot-backend/*.iws
+hyanjot-backend/*.ipr
+hyanjot-backend/.apt_generated
+hyanjot-backend/.classpath
+hyanjot-backend/.factorypath
+hyanjot-backend/.project
+hyanjot-backend/.settings
+hyanjot-backend/.springBeans
+hyanjot-backend/.sts4-cache
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# 前端相关
+hyanjot-frontend/node_modules/
+hyanjot-frontend/dist/
+hyanjot-frontend/dist-ssr/
+hyanjot-frontend/.vscode/*
+!hyanjot-frontend/.vscode/extensions.json
+hyanjot-frontend/.idea
+hyanjot-frontend/*.suo
+hyanjot-frontend/*.ntvs*
+hyanjot-frontend/*.njsproj
+hyanjot-frontend/*.sln
+hyanjot-frontend/*.sw?
+hyanjot-frontend/*.tsbuildinfo
+hyanjot-frontend/.eslintcache
+hyanjot-frontend/coverage/
+hyanjot-frontend/__screenshots__/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# 日志文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# 系统文件
+.DS_Store
+*.local
 
-### VS Code ###
+# IDE
 .vscode/
+.idea/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/

@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "name": "Backend (Spring Boot)",
+      "path": "hyanjot-backend"
+    },
+    {
+      "name": "Frontend (Vue)",
+      "path": "hyanjot-frontend"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/target": true,
+      "**/.git": true
+    },
+    "java.compile.nullAnalysis.mode": "automatic"
+  }
+}
+
