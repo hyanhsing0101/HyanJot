@@ -2,6 +2,7 @@ package com.hyanhsing.hyanjot.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 
 /**
@@ -17,6 +18,7 @@ public class TodoItem {
     @OneToOne
     @JoinColumn(name = "id")
     @MapsId  // 共享主键，id与Item表的id相同
+    @JsonIgnore  // 避免序列化时的循环引用
     private Item item;
 
     /**
@@ -32,9 +34,9 @@ public class TodoItem {
     private String priority;
 
     /**
-     * 模式：true=进度模式, false=子任务模式
+     * 模式：null=普通TODO, true=进度模式, false=子任务模式
      */
-    @Column(name = "progress_mode", nullable = false)
+    @Column(name = "progress_mode", nullable = true)
     private Boolean progressMode;
 
     /**

@@ -67,9 +67,37 @@ public class ItemController {
      * 根据ID获取备忘项（包含子表数据）
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getItemById(@PathVariable Long id) {
         return itemService.findByIdWithDetails(id)
-                .map(ResponseEntity::ok)
+                .map(item -> {
+                    Map<String, Object> result = new HashMap<>();
+                    // 基础Item字段
+                    result.put("id", item.getId());
+                    result.put("userId", item.getUserId());
+                    result.put("type", item.getType());
+                    result.put("title", item.getTitle());
+                    result.put("content", item.getContent());
+                    result.put("status", item.getStatus());
+                    result.put("sortOrder", item.getSortOrder());
+                    result.put("createdAt", item.getCreatedAt());
+                    result.put("updatedAt", item.getUpdatedAt());
+                    
+                    // 根据类型添加子表数据
+                    if ("TODO".equals(item.getType()) && item.getTodoItem() != null) {
+                        Map<String, Object> todoData = new HashMap<>();
+                        TodoItem todoItem = item.getTodoItem();
+                        todoData.put("deadline", todoItem.getDeadline());
+                        todoData.put("priority", todoItem.getPriority());
+                        todoData.put("progressMode", todoItem.getProgressMode());
+                        todoData.put("progressCurrent", todoItem.getProgressCurrent());
+                        todoData.put("progressTotal", todoItem.getProgressTotal());
+                        todoData.put("subtasks", todoItem.getSubtasks());
+                        result.put("todoItem", todoData);
+                    }
+                    // TODO: 添加HABIT和REMINDER的处理
+                    
+                    return ResponseEntity.ok(result);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -117,8 +145,22 @@ public class ItemController {
      */
     @PostMapping("/todo")
     public ResponseEntity<Item> createTodo(@RequestBody TodoCreateDTO dto) {
-        Item created = todoService.createTodo(dto);
-        return ResponseEntity.ok(created);
+        try {
+            Item created = todoService.createTodo(dto);
+            return ResponseEntity.ok(created);
+        } catch (Exception e) {
+            e.printStackTrace();  // 打印错误堆栈
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * 更新TODO类型的备忘项
+     */
+    @PutMapping("/todo/{id}")
+    public ResponseEntity<Item> updateTodo(@PathVariable Long id, @RequestBody TodoCreateDTO dto) {
+        Item updated = todoService.updateTodo(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     /**
@@ -167,12 +209,38 @@ public class ItemController {
      * 添加子任务（Web端用）
      */
     @PostMapping("/{id}/subtask")
-    public ResponseEntity<TodoItem> addSubtask(
+    public ResponseEntity<Map<String, Object>> addSubtask(
             @PathVariable Long id,
             @RequestBody Map<String, String> data) {
+        if (data == null || !data.containsKey("text")) {
+            return ResponseEntity.badRequest().build();
+        }
         String text = data.get("text");
-        TodoItem updated = todoService.addSubtask(id, text);
-        return ResponseEntity.ok(updated);
+        if (text == null || text.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        try {
+            TodoItem updated = todoService.addSubtask(id, text.trim());
+            
+            // 手动构建返回数据，避免序列化问题
+            Map<String, Object> result = new HashMap<>();
+            result.put("id", updated.getId());
+            result.put("deadline", updated.getDeadline());
+            result.put("priority", updated.getPriority());
+            result.put("progressMode", updated.getProgressMode());
+            result.put("progressCurrent", updated.getProgressCurrent());
+            result.put("progressTotal", updated.getProgressTotal());
+            result.put("subtasks", updated.getSubtasks());
+            
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            // 返回错误信息
+            Map<String, Object> errorResult = new HashMap<>();
+            errorResult.put("error", true);
+            errorResult.put("message", e.getMessage());
+            return ResponseEntity.status(500).body(errorResult);
+        }
     }
 
     /**

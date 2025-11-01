@@ -23,7 +23,7 @@ export interface TodoItem extends BaseItem {
   // TODO专用字段
   deadline: string  // 必填：截止日期
   priority: 'low' | 'medium' | 'high'  // 必填：优先级
-  progressMode: boolean  // true=进度模式, false=子任务模式
+  progressMode?: boolean | null  // null=普通TODO, true=进度模式, false=子任务模式
   // 进度模式字段
   progressCurrent?: number  // 当前进度
   progressTotal?: number    // 总进度

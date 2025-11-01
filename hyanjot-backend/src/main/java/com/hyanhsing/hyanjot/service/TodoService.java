@@ -13,6 +13,11 @@ public interface TodoService {
     Item createTodo(com.hyanhsing.hyanjot.dto.TodoCreateDTO dto);
 
     /**
+     * 更新TODO（更新Item + TodoItem）
+     */
+    Item updateTodo(Long itemId, com.hyanhsing.hyanjot.dto.TodoCreateDTO dto);
+
+    /**
      * 进度+1（硬件端用）
      */
     TodoItem incrementProgress(Long itemId);

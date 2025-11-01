@@ -1,5 +1,6 @@
 package com.hyanhsing.hyanjot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -43,18 +44,21 @@ public class Item {
      * 关联的TODO类型数据
      */
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private TodoItem todoItem;
 
     /**
      * 关联的习惯类型数据
      */
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private HabitItem habitItem;
 
     /**
      * 关联的提醒类型数据
      */
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private ReminderItem reminderItem;
 
     @PrePersist
